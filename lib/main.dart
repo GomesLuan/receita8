@@ -7,14 +7,18 @@ enum TableStatus{idle,loading,ready,error}
 class DataService{
   final ValueNotifier<Map<String,dynamic>> tableStateNotifier = ValueNotifier({
     'status':TableStatus.idle,
-    'dataObjects':[]
+    'dataObjects':[],
+    'propertyNames':[''],
+    'columnNames':['']
   });
 
   void carregar(index){
     final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
     tableStateNotifier.value = {
       'status': TableStatus.loading,
-      'dataObjects': []
+      'dataObjects': [],
+      'propertyNames':[''],
+      'columnNames':['']
     };
     funcoes[index]();
   }
@@ -39,7 +43,8 @@ class DataService{
         tableStateNotifier.value = {
           'status': TableStatus.ready,
           'dataObjects': beersJson,
-          'propertyNames': ["name","style","ibu"]
+          'propertyNames': ["name","style","ibu"],
+          'columnNames' : ["Nome", "Estilo", "IBU"]
         };
       }
     );
@@ -75,7 +80,7 @@ class MyApp extends StatelessWidget {
                 return DataTableWidget(
                   jsonObjects:value['dataObjects'], 
                   propertyNames: value['propertyNames'], 
-                  columnNames: ["Nome", "Estilo", "IBU"]
+                  columnNames: value['columnNames']
                 );
               case TableStatus.error: 
                 return Text("Lascou");
