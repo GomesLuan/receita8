@@ -232,7 +232,9 @@ class DataTableWidget extends HookWidget {
   final List<String> columnNames;
   final List<String> propertyNames;
 
-  DataTableWidget({this.jsonObjects = const [], this.columnNames = const ["Nome","Estilo","IBU"], this.propertyNames= const ["name", "style", "ibu"]});
+  DataTableWidget({this.jsonObjects = const [], this.columnNames = const ["Nome","Estilo","IBU"], this.propertyNames= const ["name", "style", "ibu"]}) {
+    jsonObjects.sort((obj1, obj2) => obj1[propertyNames[0]].compareTo(obj2[propertyNames[0]]));
+  }
 
   @override
   Widget build(BuildContext context) {
