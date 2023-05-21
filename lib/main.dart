@@ -227,7 +227,7 @@ class NewNavBar extends HookWidget {
   }
 }
 
-class DataTableWidget extends StatelessWidget {
+class DataTableWidget extends HookWidget {
   final List jsonObjects;
   final List<String> columnNames;
   final List<String> propertyNames;
@@ -236,9 +236,23 @@ class DataTableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var stateIndex = useState(0);
+    var stateAscending = useState(true);
     return DataTable(
+      sortColumnIndex: stateIndex.value,
+      sortAscending: stateAscending.value,
       columns: columnNames.map( 
         (name) => DataColumn(
+          onSort: (index, Ascending) {
+            stateIndex.value = index;
+            stateAscending.value = Ascending;
+            if (Ascending) {
+              jsonObjects.sort((obj1, obj2) => obj1[propertyNames[index]].compareTo(obj2[propertyNames[index]]));
+            }
+            else {
+              jsonObjects.sort((obj1, obj2) => obj2[propertyNames[index]].compareTo(obj1[propertyNames[index]]));
+            }
+          },
           label: Expanded(
             child: Text(name, style: TextStyle(fontStyle: FontStyle.italic))
           )
