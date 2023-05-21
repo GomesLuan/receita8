@@ -37,18 +37,18 @@ class DataService{
       scheme: 'https',
       host: 'random-data-api.com',
       path: 'api/beer/random_beer',
-      queryParameters: {'size': '5'});
-
-      http.read(beersUri).then( (jsonString){
-        var beersJson = jsonDecode(jsonString);
-        tableStateNotifier.value = {
-          'status': TableStatus.ready,
-          'dataObjects': beersJson,
-          'propertyNames': ["name","style","ibu"],
-          'columnNames' : ["Nome", "Estilo", "IBU"]
-        };
-      }
+      queryParameters: {'size': '5'}
     );
+
+    http.read(beersUri).then( (jsonString) {
+      var beersJson = jsonDecode(jsonString);
+      tableStateNotifier.value = {
+        'status': TableStatus.ready,
+        'dataObjects': beersJson,
+        'propertyNames': ["name","style","ibu"],
+        'columnNames' : ["Nome", "Estilo", "IBU"]
+      };
+    });
   }
 }
 
@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
                   )
                 );
               case TableStatus.loading:
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               case TableStatus.ready: 
                 return DataTableWidget(
                   jsonObjects:value['dataObjects'], 
@@ -153,7 +153,7 @@ class DataTableWidget extends StatelessWidget {
   final List<String> columnNames;
   final List<String> propertyNames;
 
-  DataTableWidget( {this.jsonObjects = const [], this.columnNames = const ["Nome","Estilo","IBU"], this.propertyNames= const ["name", "style", "ibu"]});
+  DataTableWidget({this.jsonObjects = const [], this.columnNames = const ["Nome","Estilo","IBU"], this.propertyNames= const ["name", "style", "ibu"]});
 
   @override
   Widget build(BuildContext context) {
